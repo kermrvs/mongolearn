@@ -6,7 +6,7 @@ db.createCollection('orders')
 
 const users = []
 const orders = [];
-for (let i = 0; i < 3000; i++) {
+for (let i = 0; i < 30; i++) {
   const date = new Date();
   const user = {
     _id: i,
@@ -33,17 +33,15 @@ users.forEach(value => {
       title: 'some title',
       product: 'some product'
     }
-    orders.push(order)
+    orders.push({
+      insertOne:{
+        'document':{order}
+      }
+    })
   }
 })
 
-db.orders.bulkWrite([
-  {
-    insertOne: {
-      'document': {orders}
-    }
-  }
-])
+db.orders.bulkWrite(orders)
 
 print('Orders count: ',db.orders.countDocuments());
 print('Customers',db.customers.stats().size,'bytes')
